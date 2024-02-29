@@ -75,13 +75,13 @@ export default function App() {
 
         <div>
           <button className="prev-btn" onClick={handlePrev}>
-            Previous
+          Previous
           </button>
           <button className="next-btn" onClick={handleNext}>
-            Next
+          Next
           </button>
           <button className="random-btn" onClick={randomItem}>
-            Random
+          surprise me
           </button>
         </div>
       </main>
