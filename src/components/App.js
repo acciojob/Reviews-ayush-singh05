@@ -1,90 +1,87 @@
-import { useState } from "react";
-import Review from "./Review";
+import React,{useState} from "react";
+import '../styles/App.css';
 
-export default function App() {
-  const arr = [
-    {
-      id: 1,
-      name: "susan smith",
-      job: "web developer",
-      image:
-        "https://res.cloudinary.com/diqqf3eq2/image/upload/v1586883334/person-1_rfzshl.jpg",
-      text: "I'm baby meggings twee health goth +1. Bicycle rights tumeric chartreuse before they sold out chambray pop-up. Shaman humblebrag pickled coloring book salvia hoodie, cold-pressed four dollar toast everyday carry",
-    },
-    {
-      id: 2,
-      name: "anna johnson",
-      job: "web designer",
-      image:
-        "https://res.cloudinary.com/diqqf3eq2/image/upload/v1586883409/person-2_np9x5l.jpg",
-      text: "Helvetica artisan kinfolk thundercats lumbersexual blue bottle. Disrupt glossier gastropub deep v vice franzen hell of brooklyn twee enamel pin fashion axe.photo booth jean shorts artisan narwhal.",
-    },
-    {
-      id: 3,
-      name: "peter jones",
-      job: "intern",
-      image:
-        "https://res.cloudinary.com/diqqf3eq2/image/upload/v1586883417/person-3_ipa0mj.jpg",
-      text: "Sriracha literally flexitarian irony, vape marfa unicorn. Glossier tattooed 8-bit, fixie waistcoat offal activated charcoal slow-carb marfa hell of pabst raclette post-ironic jianbing swag.",
-    },
-    {
-      id: 4,
-      name: "bill anderson",
-      job: "the boss",
-      image:
-        "https://res.cloudinary.com/diqqf3eq2/image/upload/v1586883423/person-4_t9nxjt.jpg",
-      text: "Edison bulb put a bird on it humblebrag, marfa pok pok heirloom fashion axe cray stumptown venmo actually seitan. VHS farm-to-table schlitz, edison bulb pop-up 3 wolf moon tote bag street art shabby chic. ",
-    },
-  ];
-  const [item, setItem] = useState(0);
-  const [random, setRandom] = useState(null);
-  const handleNext = () => {
-    setItem(item + 1);
-    setRandom(null);
-  };
-  const handlePrev = () => {
-    if (item != 0) {
-      setItem(item - 1);
-      setRandom(null);
+const App = () => {
+
+    let reviewsArr = [
+        {
+          id: 1,
+          name: 'susan smith',
+          job: 'web developer',
+          image:
+            'https://res.cloudinary.com/diqqf3eq2/image/upload/v1586883334/person-1_rfzshl.jpg',
+          text:
+            "I'm baby meggings twee health goth +1. Bicycle rights tumeric chartreuse before they sold out chambray pop-up. Shaman humblebrag pickled coloring book salvia hoodie, cold-pressed four dollar toast everyday carry",
+        },
+        {
+          id: 2,
+          name: 'anna johnson',
+          job: 'web designer',
+          image:
+            'https://res.cloudinary.com/diqqf3eq2/image/upload/v1586883409/person-2_np9x5l.jpg',
+          text:
+            'Helvetica artisan kinfolk thundercats lumbersexual blue bottle. Disrupt glossier gastropub deep v vice franzen hell of brooklyn twee enamel pin fashion axe.photo booth jean shorts artisan narwhal.',
+        },
+        {
+          id: 3,
+          name: 'peter jones',
+          job: 'intern',
+          image:
+            'https://res.cloudinary.com/diqqf3eq2/image/upload/v1586883417/person-3_ipa0mj.jpg',
+          text:
+            'Sriracha literally flexitarian irony, vape marfa unicorn. Glossier tattooed 8-bit, fixie waistcoat offal activated charcoal slow-carb marfa hell of pabst raclette post-ironic jianbing swag.',
+        },
+        {
+          id: 4,
+          name: 'bill anderson',
+          job: 'the boss',
+          image:
+            'https://res.cloudinary.com/diqqf3eq2/image/upload/v1586883423/person-4_t9nxjt.jpg',
+          text:
+            'Edison bulb put a bird on it humblebrag, marfa pok pok heirloom fashion axe cray stumptown venmo actually seitan. VHS farm-to-table schlitz, edison bulb pop-up 3 wolf moon tote bag street art shabby chic. ',
+        },
+    ];
+
+    let [reviews, setReviews] = useState(0);
+
+    function prevButton(){
+        setReviews((reviews - 1 + reviewsArr.length) % reviewsArr.length);
     }
-  };
-  const randomItem = () => {
-    setRandom(Math.floor(Math.random() * arr.length));
-  };
+    function nextButton(){
+        setReviews((reviews + 1) % reviewsArr.length);
+    }
+    function surButton(){
+        let randonIndex = reviews;
+        while(randonIndex === reviews){
+            randonIndex = Math.floor(Math.random() * reviewsArr.length);
+        }
+        setReviews(randonIndex);
+        
+    }
 
-  return (
-    <section className="container">
-      <main>
-        <h1 id="review-heading">Our Reviews</h1>
-        <div className="review"></div>
-        {random == null ? (
-          <Review
-            name={arr[item.name]}
-            image={arr[item].image}
-            job={arr[item].job}
-            text={arr[item].text}
-          />
-        ) : (
-          <Review
-            name={arr[random].name}
-            image={arr[random].image}
-            job={arr[random].job}
-            text={arr[random].text}
-          />
-        )}
-
+    return(
         <div>
-          <button className="prev-btn" onClick={handlePrev}>
-          Previous
-          </button>
-          <button className="next-btn" onClick={handleNext}>
-          Next
-          </button>
-          <button className="random-btn" onClick={randomItem}>
-          surprise me
-          </button>
+            <h1 id="review-heading">Our Reviews</h1>
+            <div className="review">
+                {
+                    reviewsArr.map((item, index) => (
+                        <div key={item.id} className={index === reviews ? 'slide active' : 'slide'}>
+                            <img src={item.image} alt="pic" className="person-img"/>
+                            <div>
+                            <p className="job">{item.job}</p>
+                            <span id={`author-${index + 1}`} className="author">Name: {item.name}</span>
+                            <p className="info">{item.text}</p>
+                            </div>
+                        </div>
+                    ))
+                }
+                <button className="prev-btn" onClick={prevButton}>prev</button>
+            <button className="next-btn" onClick={nextButton}>next</button>
+            <button className="random-btn" onClick={surButton}>surprise me</button>
+            </div>
+            
         </div>
-      </main>
-    </section>
-  );
+    )
 }
+
+export default App;
